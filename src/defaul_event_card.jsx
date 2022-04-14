@@ -3,10 +3,8 @@ import React,{ useState, useEffect } from 'react';
 import axios from 'axios';
 import SelectOption from './select_option';
 import InputField from './input_field';
-import PriceForm from './event_form/price_form';
-import VolumeForm from './event_form/value_form';
 
-const EventCard =(props)=> {
+const FirstEventCard =()=> {
 
     const [coins,setCoins]=useState(["BTC","ETH","BNB"]);
     const [starategy,setStrategy]=useState(["Price","Volume","RSI"]);
@@ -33,21 +31,17 @@ const EventCard =(props)=> {
             setSelectedVolume(true);
             setSelectedPrice(false);
         }
+        
+    }else{
+        setSelectedPrice(false);
+        setSelectedVolume(false);
     }
+  
  }
   
         return (
             <div>
                 <div className="card text-center alert alert-warning">
-                
-                
-                {props.noAndOr?null:<SelectOption 
-                    list={or_and} 
-                    lables={"or_and"}
-                    id={"or_and"} 
-                    getSelectUserInput={getSelectUserInput}/>}
-                
-
                 <div className="card-body">
                 <div className="card-title">
                     <SelectOption 
@@ -63,9 +57,28 @@ const EventCard =(props)=> {
                     id={"strategy"} 
                     getSelectUserInput={getSelectUserInput}/>
                     </div>
+                    {
+                    selectedPrice? 
+                    <>
+                    <div className="card-title">
+                    <SelectOption
+                     list={condition} 
+                     lables={"Condition"}
+                     id={"condition"} 
+                    getSelectUserInput={getSelectUserInput}/>
+                    </div>
+                    <InputField list={percent}/>
+                    <div className="card-title">
+                    <SelectOption
+                    lables={"Time Frame"}
+                     list={timeFrame} 
+                     id={"timeFrame"} 
+                    getSelectUserInput={getSelectUserInput}/>
+                    </div>
+                    </>
+                    :null
+                    }
                     
-                    {selectedPrice? <PriceForm/>:null}
-                    {selectedVolume? <VolumeForm/>:null}
                 </div>
                 </div>
             </div>
@@ -73,4 +86,4 @@ const EventCard =(props)=> {
  
 }
 
-export default EventCard;
+export default FirstEventCard;
