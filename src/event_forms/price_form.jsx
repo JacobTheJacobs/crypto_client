@@ -4,8 +4,7 @@ import InputField from '../fields/input_field'
 import ButtonGroup from '../fields/ButtonGroup'
 
 const PriceForm = (props) => {
-  const [coins, setCoins] = useState(["BTC", "ETH", "BNB"]);
-  const [starategy, setStrategy] = useState(["Price", "Volume", "RSI"]);
+
   const [condition, setCondition] = useState([
     "increased by",
     "deacreased by",
@@ -27,21 +26,7 @@ const PriceForm = (props) => {
   return (
     <div className="d-flex flex-wrap">
                 <div className="card-title">
-            <SelectOption
-              list={coins}
-              id={"coin"}
-              lables="Coin"
-              getSelectUserInput={getSelectUserInput}
-            />
-          </div>
-          <div className="card-title">
-            <SelectOption
-              list={starategy}
-              lables={"Strategy"}
-              id={"strategy"}
-              getSelectUserInput={getSelectUserInput}
-            />
-          </div>
+         
 
   <div className="card-title">
     <SelectOption
@@ -51,6 +36,7 @@ const PriceForm = (props) => {
         getSelectUserInput={getSelectUserInput}
       />
   </div>
+
   <div className="card-title">
       value
       <InputField 
@@ -58,6 +44,8 @@ const PriceForm = (props) => {
        list={percent}
         getUserInputField={getUserInputField} />
       </div>
+
+    </div>      
     </div>
   );
 };

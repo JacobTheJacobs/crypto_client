@@ -20,12 +20,13 @@ const InputField = (props) => {
 
   return (
     <div className="input-group mb-3">
+    
       <input
         type="text"
         id={props.id}
         className="form-control"
         aria-label="Text input with dropdown button"
-        disabled={props.last}
+
         onChange={(e) => {
           setUserInputFromField(e);
         }}

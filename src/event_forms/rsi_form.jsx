@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import ButtonGroup from "../ButtonGroup";
-import InputField from "../input_field";
-import SelectOption from "../select_option";
+import ButtonGroup from "../fields/ButtonGroup";
+import InputField from "../fields/input_field";
+import SelectOption from "../fields/select_option";
 
 const RSIForm = (props) => {
+  const [coins, setCoins] = useState(["BTC", "ETH", "BNB"]);
+  const [starategy, setStrategy] = useState(["Price", "Volume", "RSI"]);
   const [condition, setCondition] = useState(["lower than", "higher than"]);
   const [tm, setTimeFrame] = useState([
     "1m",
@@ -35,22 +37,6 @@ const RSIForm = (props) => {
 
   return (
  <div className="d-flex flex-wrap">
-    <div className="card-title">
-          <SelectOption
-            list={coins}
-            id={"coin"}
-            lables="Coin"
-            getSelectUserInput={getSelectUserInput}
-          />
-          </div>
-          <div className="card-title">
-          <SelectOption
-            list={starategy}
-            lables={"Strategy"}
-            id={"strategy"}
-            getSelectUserInput={getSelectUserInput}
-          />
-          </div>
       <ButtonGroup
         list={condition}
         lables={"Strategy Condition"}

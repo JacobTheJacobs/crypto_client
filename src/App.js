@@ -20,6 +20,7 @@ function App() {
   const[user_star_input,setUserStratInput]=useState("70")
   const[user_star_input_selc,setUserStratInputSelc]=useState("%")
   const[user_time_frame,setUserTimeFrame]=useState("1h")
+  const[user_or_and,setUserOrAnd]=useState("AND")
 
   //user selection action order_input
   const[user_action_side,setUserActionSide]=useState("BUY");
@@ -53,6 +54,8 @@ function App() {
       setUserOrderInput(e.target.value)
      }else if(id==="side"){
       setUserActionSide(e.target.value)
+     }else if(id==="or_and"){
+      setUserOrAnd(e.target.innerText)
      }
   }
 
