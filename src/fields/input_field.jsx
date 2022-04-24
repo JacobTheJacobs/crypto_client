@@ -9,7 +9,7 @@ const InputField = (props) => {
 
   const setUserInputFromField = (e) => {
     if(!isNaN(e.target.value) && isFinite(e.target.value)){
-      console.log(e)
+      console.log(props)
       props.getUserInputField(e);
       setError("")
     }else{
@@ -25,6 +25,7 @@ const InputField = (props) => {
         id={props.id}
         className="form-control"
         aria-label="Text input with dropdown button"
+        disabled={props.last}
         onChange={(e) => {
           setUserInputFromField(e);
         }}

@@ -6,12 +6,35 @@ function Event(props) {
     const getDataFromSubForm=(e)=>{
         props.getDataFromForm(e)
     }
-
+  //delete selected tab
+  const deleteTab = (e) => {
+    props.deleteEvent(props.condition.id);
+  };
     return (
+        <div style={{ width: "50%" }}>
         <div className="card text-center alert alert-warning">
+          <div className="card-body">
+            
+                    {props.last ? (
+                <div
+                  style={{
+                    border: "1px solid",
+                    borderRadius: "5px",
+                    padding: "10px",
+                    position: "absolute",
+                    top: "0",
+                    right: "0",
+                  }}
+                  onClick={(e) => {
+                    deleteTab(e);
+                  }}
+                >
+                  X
+                </div>
+              ) : null}
             dsa
             <PriceForm getDataFromSubForm={getDataFromSubForm}/>
-        </div>
+        </div>   </div>   </div>
     )
 }
 
