@@ -33,14 +33,12 @@ const InputField = (props) => {
       />
       <br></br>
         {error!=="" && <span className="alert alert-danger">{error}</span> }
-      <button
-        className="btn btn-outline-secondary
-         dropdown-toggle"
-        type="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      />
-      <ul className="dropdown-menu dropdown-menu-end">
+        <button type="button"
+         className="btn btn-warning dropdown-toggle"
+         data-bs-toggle="dropdown" aria-expanded="false">
+    Choose currency
+  </button>
+      <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
         {props.list.map((coin,_) => (
           <li
             onClick={(e) => {
@@ -49,11 +47,11 @@ const InputField = (props) => {
             key={coin}
             value={coin}
             innertext={coin}
-            href={coin.toString()}
           >
-            <a className="dropdown-item" value={coin} id="select_condition">
+            <button type="button" className="dropdown-item" 
+            value={coin} id="select_condition">
               {coin ? coin : "?"}
-            </a>
+            </button>
           </li>
         ))}
       </ul>

@@ -39,13 +39,12 @@ const VolumeForm = (props) => {
     <div className="d-flex flex-wrap">
       <ButtonGroup
         list={condition}
-        lables={"condition"}
         lables={"Strategy Condition"}
         id={"strategy_condition"}
         getSelectUserInput={getSelectUserInput}
       />
-      value
-      <InputField   id={"strategy_input"} list={percent} getUserInputField={getUserInputField} />
+      
+      <InputField  lables={"Volume value"}  id={"strategy_input"} list={percent} getUserInputField={getUserInputField} />
     </div>
     </div>
   );

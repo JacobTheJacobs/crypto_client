@@ -7,8 +7,26 @@ import Action from './cards/action'
 localStorage.setItem("conditions",null)
 function App() {
   const divRref = useRef(null);
-  const [conditions, setConditions] = useState([]);
+  const [conditions, setConditions] = useState([{
+    id: 1,
+    se: 1,
+    e: 0,
+    a: 0,
+    starting_events: [{
+      id: "",
+      data:""
+    }],
+    events: [{
+      id: "",
+      data:""
+    }],
+    actions: [{
+      id: "",
+      data:""
+    }],
+  }]);
   const [starting_events, setStartingEvents] = useState([]);
+  
   const [events, setEvents] = useState([]);
   const [actions, setActions] = useState([]);
   const [condition_finneshed, setConditionFinneshed] = useState(false);
@@ -30,7 +48,29 @@ function App() {
 
   useEffect(() => {
     divRref.current.scrollIntoView({ behavior: "smooth" });
-  }, [conditions, events, actions]);
+    console.log("updated")
+    console.log(conditions)
+    if(conditions.length===0){
+      setConditions([{
+        id: 1,
+        se: 1,
+        e: 0,
+        a: 0,
+        starting_events: [{
+          id: "",
+          data:""
+        }],
+        events: [{
+          id: "",
+          data:""
+        }],
+        actions: [{
+          id: "",
+          data:""
+        }],
+      }])
+    }
+  }, [conditions, events, actions, starting_events]);
 
  
   const getDataFromForm=(e)=>{
@@ -60,43 +100,44 @@ function App() {
   }
 
 
-  const addEvent= async ()=>{
+  const addEvent=  ()=>{
          let obj = {}
          //Starting event
         if(condition_finneshed){
-          obj = {
-          id: starting_events.length + 1,
-          type:0,
-          coin:user_coin,
-          starategy:user_starategy,
-          startegy_condition:user_strat_cond,
-          startegy_condition_input:user_star_input,
-          startegy_condition_input_select:user_star_input_selc,
-          timeframe:user_time_frame
-      }
-            await setStartingEvents([
+          if(conditions[conditions.length - 1].se === 1){
+            obj = {
+              id: starting_events.length + 1,
+              type:0,
+              coin:user_coin,
+              starategy:user_starategy,
+              startegy_condition:user_strat_cond,
+              startegy_condition_input:user_star_input,
+              startegy_condition_input_select:user_star_input_selc,
+              timeframe:user_time_frame
+          }
+
+            setStartingEvents([
               ...starting_events,
               {
                 id: starting_events.length + 1,
                 data:obj
               },
             ]);
- 
-            await setConditions([
+            setConditions((conditions)=>[ 
               ...conditions,
               {
                 id: conditions.length + 1,
                 se: 1,
                 e: 0,
                 a: 0,
-                starting_events: starting_events,
-                events: events,
-                actions: actions,
-              },
-            ]);
-              //Regular event
-          }else{
-
+                starting_events: [...starting_events,{
+                  id: starting_events.length + 1,
+                  data:obj
+                }],
+                events: [...events],
+                actions: [...actions],
+              }]);
+          }else if(conditions[conditions.length - 1].e === 1){
             obj = {
               id: events.length + 1,
               type:1,
@@ -105,29 +146,90 @@ function App() {
               startegy_condition:user_strat_cond,
               startegy_condition_input:user_star_input,
               startegy_condition_input_select:user_star_input_selc,
+              timeframe:user_time_frame,
+              user_side:user_or_and
+            }
+          }else if(conditions[conditions.length - 1].a === 1 ){
+            obj = {
+              id: actions.length + 1,
+              type:2,
+              side:user_action_side,
+              coin:user_coin,
+              loop:user_loop,
+              order_input:user_order_input,
+              startegy_condition_input:user_star_input,
+              startegy_condition_input_select:user_star_input_selc,
               timeframe:user_time_frame
             }
-
-            await setEvents([
-              ...events,
-              {
-                id: events.length + 1,
-                data:obj
-              },
-            ]);
+          }
           
-            await setConditions([
+
+          
+              //Regular event
+          }else{
+
+            if(conditions.length===1 || conditions[conditions.length - 1].a === 1 ){
+              
+              obj = {
+                id: starting_events.length + 1,
+                type:0,
+                coin:user_coin,
+                starategy:user_starategy,
+                startegy_condition:user_strat_cond,
+                startegy_condition_input:user_star_input,
+                startegy_condition_input_select:user_star_input_selc,
+                timeframe:user_time_frame
+            }
+
+            setConditions([
               ...conditions,
               {
                 id: conditions.length + 1,
                 se: 0,
                 e: 1,
                 a: 0,
-                starting_events: starting_events,
-                events: events,
-                actions: actions,
-              },
-            ]);
+                starting_events: [...starting_events,{
+                  id: starting_events.length + 1,
+                  data:obj
+                }],
+                events: [...events],
+                actions: [...actions],
+              }]);
+          }else{
+
+              setEvents([
+                ...events,
+                {
+                  id: events.length + 1,
+                  data:obj
+                },
+              ]);
+              obj = {
+                id: events.length + 1,
+                type:1,
+                coin:user_coin,
+                starategy:user_starategy,
+                startegy_condition:user_strat_cond,
+                startegy_condition_input:user_star_input,
+                startegy_condition_input_select:user_star_input_selc,
+                timeframe:user_time_frame,
+                user_side:user_or_and
+              }
+              setConditions([
+                ...conditions,
+                {
+                  id: conditions.length + 1,
+                  se: 0,
+                  e: 1,
+                  a: 0,
+                  starting_events: [...starting_events],
+                  events: [...events,{
+                    id: events.length + 1,
+                    data:obj
+                  }],
+                  actions: [...actions],
+                }]);
+            }    
 }
     //push obj to the local storage array
     let localStorageConditions = JSON.parse(localStorage.getItem("conditions"));
@@ -149,57 +251,84 @@ function App() {
     //add Action
     const addAction = (e) => {
       let obj={}
-      e.preventDefault();
-      if ((conditions.length === 0) ||
-        conditions[conditions.length - 1].e === 1 ||
-        conditions[conditions.length - 1].se === 1 ||
-        conditions[conditions.length - 2].e === 1 ||
-        (conditions[conditions.length - 2].se === 1 &&
-        conditions[conditions.length - 1].a === 1) ||
-        conditions[conditions.length - 3].e === 1 ||
-        (conditions[conditions.length - 3].se === 1 &&
-        conditions[conditions.length - 2].a === 1 &&
-         conditions[conditions.length - 1].a === 1)
-      ) {
+      
+      if(conditions[conditions.length - 1].se === 1){
         obj = {
-          id: actions.length + 1,
-          type:2,
+          id: starting_events.length + 1,
+          type:0,
           coin:user_coin,
           starategy:user_starategy,
           startegy_condition:user_strat_cond,
           startegy_condition_input:user_star_input,
           startegy_condition_input_select:user_star_input_selc,
           timeframe:user_time_frame
+      }
+     
+      }else if(conditions[conditions.length - 1].e === 1){
+        obj = {
+          id: events.length + 1,
+          type:1,
+          coin:user_coin,
+          starategy:user_starategy,
+          startegy_condition:user_strat_cond,
+          startegy_condition_input:user_star_input,
+          startegy_condition_input_select:user_star_input_selc,
+          timeframe:user_time_frame,
+          user_side:user_or_and
         }
+      }else if(conditions[conditions.length - 1].a === 1 ){
+        obj = {
+          id: actions.length + 1,
+          type:2,
+          side:user_action_side,
+          coin:user_coin,
+          loop:user_loop,
+          order_input:user_order_input,
+          startegy_condition_input:user_star_input,
+          startegy_condition_input_select:user_star_input_selc,
+          timeframe:user_time_frame
+        }
+      }
+      if((conditions.length === 0) ||
+      conditions[conditions.length - 1].e === 1 ||
+      conditions[conditions.length - 1].se === 1 ||
+      conditions[conditions.length - 2].e === 1 ||
+      (conditions[conditions.length - 2].se === 1 &&
+      conditions[conditions.length - 1].a === 1) ||
+      conditions[conditions.length - 3].e === 1 ||
+      (conditions[conditions.length - 3].se === 1 &&
+      conditions[conditions.length - 2].a === 1 &&
+       conditions[conditions.length - 1].a === 1)){
         setConditions([
           ...conditions,
           {
             id: conditions.length + 1,
-
             se: 0,
             e: 0,
             a: 1,
-            starting_events: starting_events,
-            events: events,
-            actions: actions,
+            starting_events: [...starting_events],
+            events: [...events],
+            actions: [...actions,{
+              id: actions.length + 1,
+              data:obj
+            }],
           },
         ]);
+        let localStorageConditions = JSON.parse(localStorage.getItem("conditions"));
+        // Save allEntries back to local storage
+        if(localStorageConditions == null) localStorageConditions = [];
+        localStorage.setItem("obj", JSON.stringify(obj));
+        localStorageConditions.push(obj);
+        localStorage.setItem("conditions", JSON.stringify(localStorageConditions));
+        setUserCoin("BTC")
+        setUserLoop("once")
+        setUserTimeFrame("1h")
+        setUserStratInputSelc("%")
+        setUserStratInput("70")
+        setConditionFinneshed(true);
       }
-
-       //push obj to the local storage array
-    let localStorageConditions = JSON.parse(localStorage.getItem("conditions"));
-    // Save allEntries back to local storage
-    if(localStorageConditions == null) localStorageConditions = [];
-    localStorage.setItem("obj", JSON.stringify(obj));
-    localStorageConditions.push(obj);
-    localStorage.setItem("conditions", JSON.stringify(localStorageConditions));
-   
-   setUserCoin("BTC")
-   setUserLoop("once")
-   setUserTimeFrame("1h")
-   setUserStratInputSelc("%")
-   setUserStratInput("70")
-   setConditionFinneshed(true);
+     
+    
     };
     const deleteEvent = (id) => {
       //search for the event in the conditions array
@@ -208,11 +337,16 @@ function App() {
       const new_conditions = [...conditions];
       new_conditions.splice(index, 1);
       setConditions(new_conditions);
+
+      let localStorageConditions = JSON.parse(localStorage.getItem("conditions"));
+      // delete the last element in the conditions array
+      localStorageConditions.splice(localStorageConditions.length - 1, 1);
+      localStorage.setItem("conditions", JSON.stringify(localStorageConditions));
+
     };
   return (
     <div>
     <div className="App">
-    <StartingEvent  getDataFromForm={getDataFromForm}/>
                    {conditions.map((condition, index, { length }) => {
                       if (index + 1 === length) {
                           if (condition.e === 1) {
@@ -300,11 +434,23 @@ function App() {
               {conditions.map(
                 (condition, index) => (
                   <>
-                    <div key={index}>{index}</div>
-                    <div>{console.log(condition)}</div>
+                  {console.log(events)}
+                   {condition.se === 1 ?
+                     <div>{condition.starting_events.map((e)=>(
+                      
+                        <div>
+                        {e.data.coin}
+                        </div>
+                     
+                     ))
+                     }</div>:null}
+                     
+                    {condition.e === 1
+                    ? <div>{condition.events.id}</div>:null}
+                    {condition.a === 1
+                    ? <div>{condition.starting_events.id}</div>:null}
                   </>
                 )
-        
               )}
             </div>
             <button

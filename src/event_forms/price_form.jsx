@@ -29,7 +29,7 @@ const PriceForm = (props) => {
          
 
   <div className="card-title">
-    <SelectOption
+  <ButtonGroup
         list={condition}
         lables={"Strategy Condition"}
         id={"strategy_condition"}
@@ -38,8 +38,9 @@ const PriceForm = (props) => {
   </div>
 
   <div className="card-title">
-      value
+     
       <InputField 
+       lables={"Price value"}
       id={"strategy_input"}
        list={percent}
         getUserInputField={getUserInputField} />
